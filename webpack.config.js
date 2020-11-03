@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const webpack = require('webpack');
+const HandlebarsPlugin = require('handlebars-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -54,6 +55,7 @@ module.exports = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader'],
       },
+      { test: /\.hbs$/, loader: 'handlebars-loader' },
     ],
   },
 };

@@ -1,0 +1,37 @@
+{
+  "name": "goit-js-hw-13-image-finder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antonlazurko/goit-js-hw-13-image-finder.git"
+  },
+  "keywords": [],
+  "author": "anton <YOUR_EMAILnpm config set init.author.name YOUR_NAME\nnpm config set init.author.email YOUR_EMAIL>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antonlazurko/goit-js-hw-13-image-finder/issues"
+  },
+  "homepage": "https://github.com/antonlazurko/goit-js-hw-13-image-finder#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "babel-loader": "^8.1.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^5.0.0",
+    "html-webpack-plugin": "^5.0.0-alpha.10",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.1.0",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "http-server": "^0.12.3"
+  }
+}

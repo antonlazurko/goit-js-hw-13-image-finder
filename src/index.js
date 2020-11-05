@@ -23,7 +23,7 @@ searchFormMarkup();
 const searchForm = document.querySelector('#search-form');
 
 // события инпута и кнопки догрузки
-searchForm.addEventListener('input', debounce(onSearch, 500));
+searchForm.addEventListener('input', debounce(onSearch, 1000));
 loadMoreBtn.refs.button.addEventListener('click', fetchImages);
 
 // функция поиска по инпуту

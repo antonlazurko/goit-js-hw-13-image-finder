@@ -5,62 +5,71 @@ import debounce from 'lodash.debounce';
 import ImageApiService from './apiService.js';
 import LoadMoreBtn from './components/load-more-btn';
 
+// создаем экземпляры классов для API и кнопки догрузки
 const imageApiService = new ImageApiService();
 const loadMoreBtn = new LoadMoreBtn({
   selector: '[data-action="load-more"]',
   hidden: true,
 });
-const refs = {
-  body: document.querySelector('body'),
-};
+
+const body = document.querySelector('body');
+const gallery = document.querySelector('.gallery');
 
 // функция рендера разметки поиска
 function searchFormMarkup() {
-  const searchContainer = document.createElement('div');
-  refs.body.append(searchContainer);
-  searchContainer.insertAdjacentHTML('afterbegin', searchFormTemplate());
+  body.insertAdjacentHTML('afterbegin', searchFormTemplate());
 }
 searchFormMarkup();
-
 const searchForm = document.querySelector('#search-form');
+
+// события инпута и кнопки догрузки
 searchForm.addEventListener('input', debounce(onSearch, 500));
 loadMoreBtn.refs.button.addEventListener('click', fetchImages);
 
 // функция поиска по инпуту
 function onSearch(e) {
-  e.preventDefault();
-  imageApiService.query = e.target.value;
-  console.log(e);
+  // использую "trim()", т.к. бэкенд поддерживает запросы с пробелом
+  imageApiService.query = e.target.value.trim();
   if (imageApiService.query === '') {
-    return alert('Введи что-то нормальное');
+    return alert('Please enter something specific for query!');
   }
   loadMoreBtn.show();
   imageApiService.resetPage();
-  //   clearArticlesContainer();
+  clearImagesGallery();
   fetchImages();
 }
 
 // функция обработки данных из API
 function fetchImages() {
   loadMoreBtn.disable();
-  imageApiService.fetchImageByName().then(images => {
-    imageGalleryMarkup(images);
-    loadMoreBtn.enable();
-  });
+  imageApiService
+    .fetchImageByName()
+    .then(images => {
+      if (images) {
+        imageGalleryMarkup(images);
+        loadMoreBtn.enable();
+        window.scrollTo({
+          top: imageApiService.page * 10000,
+          behavior: 'smooth',
+        });
+      }
+    })
+    .catch(error => console.log(error));
 }
 
 // функция рендера галлереи
 function imageGalleryMarkup(images) {
-  refs.body.insertAdjacentHTML('beforeend', '<ul class="gallery"></ul>');
   images.hits.map(el => {
     const image = document.createElement('li');
     const imageCardMarukp = imageCardTemplate(el);
     image.insertAdjacentHTML('afterbegin', imageCardMarukp);
-    const gallery = document.querySelector('.gallery');
     gallery.append(image);
   });
 }
-// function clearArticlesContainer() {
-//   const gallery = document.querySelector('.gallery');
-//   gallery.innerHTML = '';
-// }
+
+// функция очистки галлереи при новом поиске
+function clearImagesGallery() {
+  if (gallery.children) {
+    gallery.innerHTML = '';
+  }
+}

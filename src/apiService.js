@@ -10,8 +10,11 @@ export default class ImageApiService {
     return fetch(url)
       .then(response => response.json())
       .then(images => {
-        this.incrementPage();
-        return images;
+        if (images.hits.length) {
+          this.incrementPage();
+          return images;
+        }
+        this.sayNothigFound();
       });
   }
   incrementPage() {
@@ -28,5 +31,11 @@ export default class ImageApiService {
 
   set query(newQuery) {
     this.searchQuery = newQuery;
+  }
+
+  sayNothigFound() {
+    return alert(
+      'Oh no! Nothig found! Please enter something specific for query!',
+    );
   }
 }
